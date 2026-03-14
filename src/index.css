@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@700&display=swap');
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Oswald", sans-serif;
+  
+  --color-accent: #FF3C00;
+  --color-gray-medium: #6B6B6B;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white antialiased overflow-hidden;
+  }
+}
+
+@layer utilities {
+  .text-spacing-hero {
+    font-size: clamp(60px, 12vw, 130px);
+    line-height: 0.8;
+    letter-spacing: 0.05em;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}

@@ -13,6 +13,9 @@
   body {
     @apply bg-black text-white antialiased;
   }
+  button, [role="button"] {
+    @apply cursor-pointer;
+  }
 }
 
 @layer utilities {

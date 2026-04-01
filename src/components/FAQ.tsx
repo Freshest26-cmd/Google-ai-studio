@@ -4,8 +4,8 @@ import { Plus, Minus, HelpCircle } from "lucide-react";
 
 const faqs = [
   {
-    question: "What makes elite series balls different?",
-    answer: "Our Elite Series features a proprietary composite leather blend and a precision-balanced core that ensures consistent flight and superior grip even in high-intensity professional play."
+    question: "What makes our elite gear different?",
+    answer: "Our Elite Series features proprietary materials and precision engineering that ensures superior performance and durability even in high-intensity use."
   },
   {
     question: "Do you offer international shipping?",
@@ -16,8 +16,8 @@ const faqs = [
     answer: "We offer a 30-day no-questions-asked return policy. If you're not completely satisfied with your gear, simply return it in its original packaging for a full refund."
   },
   {
-    question: "How do I care for my outdoor basketball?",
-    answer: "For outdoor balls, we recommend wiping them down with a damp cloth after use to remove grit and storing them in a cool, dry place away from direct sunlight."
+    question: "How do I care for my premium gear?",
+    answer: "For premium gear, we recommend following the specific care instructions included with each product and storing them in a cool, dry place."
   }
 ];
 

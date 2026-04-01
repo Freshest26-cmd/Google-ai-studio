@@ -5,12 +5,26 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
+import Stripe from "stripe";
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "your_fallback_secret";
+
+let stripeClient: Stripe | null = null;
+
+function getStripe(): Stripe {
+  if (!stripeClient) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key || key.includes("your_stripe_secret_key_here") || key.startsWith("##")) {
+      throw new Error("A valid STRIPE_SECRET_KEY environment variable is required. Please set it in the AI Studio Secrets panel.");
+    }
+    stripeClient = new Stripe(key);
+  }
+  return stripeClient;
+}
 
 // In-memory user storage
 const users: any[] = [];
@@ -64,6 +78,42 @@ app.post("/api/auth/login", async (req, res) => {
     token,
     user: { id: user.id, email: user.email }
   });
+});
+
+// --- Checkout Routes ---
+
+app.post("/api/checkout/create-session", async (req, res) => {
+  const { items } = req.body;
+
+  if (!items || items.length === 0) {
+    return res.status(400).json({ message: "Cart is empty" });
+  }
+
+  try {
+    const stripe = getStripe();
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: items.map((item: any) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
+            images: [item.image],
+          },
+          unit_amount: Math.round(item.price * 100),
+        },
+        quantity: item.quantity,
+      })),
+      mode: "payment",
+      success_url: `${process.env.APP_URL}/success`,
+      cancel_url: `${process.env.APP_URL}/checkout`,
+    });
+
+    res.json({ url: session.url });
+  } catch (error: any) {
+    console.error("Stripe session creation error:", error);
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // --- Vite Middleware ---

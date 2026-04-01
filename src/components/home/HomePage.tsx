@@ -30,8 +30,8 @@ export default function HomePage({ onCheckout, onAuth, onSelectProduct }: HomePa
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
             <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 border border-white/5">
               <img 
-                src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1000&auto=format&fit=crop" 
-                alt="Basketball Culture"
+                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000&auto=format&fit=crop" 
+                alt="Premium Lifestyle"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover opacity-60"
               />
@@ -44,12 +44,12 @@ export default function HomePage({ onCheckout, onAuth, onSelectProduct }: HomePa
             </div>
             <div className="space-y-8">
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white leading-tight">
-                Beyond the <br /> <span className="text-accent">Baseline</span>
+                Beyond the <br /> <span className="text-accent">Ordinary</span>
               </h2>
               <p className="text-zinc-400 text-lg leading-relaxed font-medium">
-                At Slam Dunk, we believe basketball is more than just a game—it's a culture of innovation, 
-                perseverance, and style. Our mission is to provide athletes with the most advanced 
-                interactive gear that pushes the boundaries of what's possible on the court.
+                At Elite Gear, we believe that quality is more than just a standard—it's a culture of innovation, 
+                perseverance, and style. Our mission is to provide you with the most advanced 
+                premium gear that pushes the boundaries of what's possible in your daily life.
               </p>
               <div className="grid grid-cols-2 gap-8 pt-4">
                 <div className="space-y-2">

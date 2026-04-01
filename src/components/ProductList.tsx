@@ -27,7 +27,7 @@ export default function ProductList({ onSelectProduct }: ProductListProps) {
               viewport={{ once: true }}
               className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none text-white"
             >
-              Elite Gear <br /> For Pros
+              Elite Gear <br /> For You
             </motion.h2>
           </div>
           <motion.p
@@ -36,7 +36,7 @@ export default function ProductList({ onSelectProduct }: ProductListProps) {
             viewport={{ once: true }}
             className="text-zinc-500 max-w-sm text-xs uppercase tracking-widest leading-relaxed"
           >
-            Engineered for maximum performance on any court. Choose your weapon and dominate the game.
+            Engineered for maximum performance in every situation. Choose your gear and elevate your lifestyle.
           </motion.p>
         </div>
 

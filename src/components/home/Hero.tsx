@@ -49,14 +49,14 @@ export default function Hero() {
           ref={titleRef}
           className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.9]"
         >
-          Elevate Your <span className="text-accent">Game</span>
+          Elevate Your <span className="text-accent">Lifestyle</span>
         </h1>
         <p 
           ref={subtextRef}
           className="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed"
         >
-          Experience the future of basketball with our premium interactive gear. 
-          Designed for those who demand excellence on and off the court.
+          Experience the future of premium shopping with our curated collection of elite gear. 
+          Designed for those who demand excellence in every aspect of life.
         </p>
         <div className="pt-4">
           <button 

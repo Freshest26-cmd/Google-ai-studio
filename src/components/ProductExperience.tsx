@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 const features = [
   {
     title: "Precision Engineering",
-    description: "Every ball is balanced to within 0.1 grams for perfect flight consistency.",
+    description: "Every product is crafted with precision to ensure the highest quality standards.",
   },
   {
     title: "Quantum Grip Tech",
@@ -68,7 +68,7 @@ export default function ProductExperience() {
           <div className="mb-4">
             <h2 className="text-4xl font-bold text-white mb-4">Immersive Experience</h2>
             <p className="text-gray-400 max-w-md">
-              Designed for those who demand excellence. Our technology pushes the boundaries of what's possible on the court.
+              Designed for those who demand excellence. Our technology pushes the boundaries of what's possible in premium gear.
             </p>
           </div>
 

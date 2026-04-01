@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowLeft, CreditCard, Truck, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cartStore, CartItem } from "../data/cartStore";
+import ErrorModal from "./ErrorModal";
 
 interface CheckoutPageProps {
   onBack: () => void;
@@ -11,6 +12,7 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setItems(cartStore.getItems());
@@ -18,45 +20,41 @@ export default function CheckoutPage({ onBack }: CheckoutPageProps) {
 
   const total = cartStore.getTotal();
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    if (items.length === 0) return;
+    
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setIsSuccess(true);
-    }, 2000);
-  };
+    try {
+      const response = await fetch("/api/checkout/create-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items }),
+      });
 
-  if (isSuccess) {
-    return (
-      <div className="min-h-[100dvh] bg-black flex items-center justify-center p-8">
-        <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="max-w-md w-full text-center space-y-8"
-        >
-          <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto text-emerald-500">
-            <CheckCircle2 size={48} />
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-3xl font-black uppercase tracking-tighter text-white">Order Confirmed</h2>
-            <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Your elite gear is on its way</p>
-          </div>
-          <p className="text-xs text-zinc-400 leading-relaxed uppercase tracking-wider">
-            Thank you for choosing Slam Dunk. We've sent a confirmation email to your inbox with tracking details.
-          </p>
-          <button 
-            onClick={onBack}
-            className="w-full bg-white text-black py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-accent hover:text-white transition-all"
-          >
-            Back to Home
-          </button>
-        </motion.div>
-      </div>
-    );
-  }
+      const data = await response.json();
+
+      if (response.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.message || "Failed to create checkout session");
+      }
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      setError(error.message || "Checkout failed. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="min-h-[100dvh] bg-black text-white pt-32 pb-24 px-12 md:px-24">
+      <ErrorModal 
+        isOpen={!!error} 
+        onClose={() => setError(null)} 
+        message={error || ""} 
+      />
       <div className="max-w-7xl mx-auto">
         <button 
           onClick={onBack}

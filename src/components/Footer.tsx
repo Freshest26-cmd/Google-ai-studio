@@ -11,12 +11,12 @@ export default function Footer() {
               <div className="w-4 h-4 rounded-full bg-white" />
             </div>
             <div className="flex flex-col leading-none font-bold text-[10px] tracking-tighter uppercase text-white">
-              <span>Slam</span>
-              <span>Dunk</span>
+              <span>Elite</span>
+              <span>Gear</span>
             </div>
           </div>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Elevating the game through interactive technology and premium design.
+            Elevating your lifestyle through innovative technology and premium design.
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export default function Footer() {
 
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5">
         <p className="text-gray-600 text-[10px] uppercase tracking-widest">
-          © {currentYear} Slam Dunk Interactive. All rights reserved.
+          © {currentYear} Elite Gear. All rights reserved.
         </p>
         
         <div className="flex gap-8">

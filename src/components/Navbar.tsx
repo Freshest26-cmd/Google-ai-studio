@@ -58,8 +58,8 @@ export default function Navbar({ onCheckout, onAuth }: NavbarProps) {
               <div className="w-4 h-4 rounded-full bg-white" />
             </div>
             <div className="flex flex-col leading-none font-bold text-[10px] tracking-tighter uppercase text-white">
-              <span>Slam</span>
-              <span>Dunk</span>
+              <span>Elite</span>
+              <span>Gear</span>
             </div>
           </div>
 
@@ -84,13 +84,13 @@ export default function Navbar({ onCheckout, onAuth }: NavbarProps) {
               {user ? (
                 <div className="flex items-center gap-4">
                   <div className="flex flex-col items-end hidden sm:flex">
-                    <span className="text-[8px] uppercase tracking-widest text-zinc-500 font-bold">Athlete</span>
+                    <span className="text-[8px] uppercase tracking-widest text-zinc-500 font-bold">Member</span>
                     <span className="text-[10px] uppercase tracking-tighter text-white font-black">{user.email?.split('@')[0]}</span>
                   </div>
                   <motion.button
                     onClick={handleLogout}
                     whileHover={{ scale: 1.1, color: "#FF3C00" }}
-                    className="text-white transition-colors cursor-pointer p-2 hover:bg-white/5 rounded-xl"
+                    className="text-white transition-colors p-2 hover:bg-white/5 rounded-xl"
                     title="Logout"
                   >
                     <LogOut size={18} />
@@ -100,7 +100,7 @@ export default function Navbar({ onCheckout, onAuth }: NavbarProps) {
                 <motion.button
                   onClick={onAuth}
                   whileHover={{ scale: 1.1, color: "#FF3C00" }}
-                  className="text-white transition-colors cursor-pointer p-2 hover:bg-white/5 rounded-xl"
+                  className="text-white transition-colors p-2 hover:bg-white/5 rounded-xl"
                 >
                   <User size={20} />
                 </motion.button>
@@ -110,7 +110,7 @@ export default function Navbar({ onCheckout, onAuth }: NavbarProps) {
             <motion.button
               onClick={() => setIsCartOpen(true)}
               whileHover={{ scale: 1.05 }}
-              className="text-white transition-colors relative cursor-pointer p-2 hover:bg-white/5 rounded-xl"
+              className="text-white transition-colors relative p-2 hover:bg-white/5 rounded-xl"
             >
               <ShoppingCart size={20} />
               <AnimatePresence>

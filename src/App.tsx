@@ -11,7 +11,6 @@ import PromotionVideoButton from "./components/PromotionVideoButton";
 import PriceTag from "./components/PriceTag";
 import GetStartedButton from "./components/GetStartedButton";
 import CarouselArrows from "./components/CarouselArrows";
-import BasketballCanvas from "./components/BasketballCanvas";
 import GravitySection from "./components/GravitySection";
 import FeaturedProducts from "./components/FeaturedProducts";
 import ProductExperience from "./components/ProductExperience";
@@ -28,6 +27,7 @@ import Testimonials from "./components/Testimonials";
 import NewsletterCTA from "./components/NewsletterCTA";
 import Footer from "./components/Footer";
 import HomePage from "./components/home/HomePage";
+import SuccessPage from "./components/SuccessPage";
 
 // Error Boundary Component
 class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean, error: any }> {
@@ -69,9 +69,25 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
 }
 
 export default function App() {
-  const [view, setView] = useState<"home" | "checkout">("home");
+  const [view, setView] = useState<"home" | "checkout" | "success">(() => {
+    if (window.location.pathname === "/success") return "success";
+    return "home";
+  });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
+
+  const handleContinueShopping = () => {
+    window.history.replaceState({}, "", "/");
+    setView("home");
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[100dvh] bg-black flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+      </div>
+    );
+  }
 
   // If no user, show Auth page
   if (!user) {
@@ -85,7 +101,7 @@ export default function App() {
     );
   }
 
-  // If user exists, show HomePage or Checkout
+  // If user exists, show HomePage, Checkout or Success
   return (
     <ErrorBoundary>
       <div className="relative w-full min-h-[100dvh] bg-black overflow-x-hidden overflow-y-auto scroll-smooth">
@@ -97,7 +113,7 @@ export default function App() {
               onAuth={() => {}} // Already logged in
               onSelectProduct={setSelectedProduct}
             />
-          ) : (
+          ) : view === "checkout" ? (
             <motion.div
               key="checkout"
               initial={{ opacity: 0, x: 100 }}
@@ -110,6 +126,8 @@ export default function App() {
                 <CheckoutPage onBack={() => setView("home")} />
               </div>
             </motion.div>
+          ) : (
+            <SuccessPage onContinue={handleContinueShopping} />
           )}
         </AnimatePresence>
 

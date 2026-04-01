@@ -46,6 +46,11 @@ class CartStore {
   getCount() {
     return this.items.reduce((sum, item) => sum + item.quantity, 0);
   }
+
+  clear() {
+    this.items = [];
+    this.notify();
+  }
 }
 
 export const cartStore = new CartStore();

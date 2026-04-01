@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Mail, Lock, ArrowRight, Github, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import gsap from "gsap";
 import { useAuth } from "../context/AuthContext";
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signInWithPopup 
+} from "firebase/auth";
+import { auth, googleProvider, githubProvider } from "../firebase";
 
 // --- Types ---
 type AuthMode = "signin" | "signup";
@@ -65,7 +71,7 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  const { login } = useAuth();
+  const { user } = useAuth();
   const formRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -120,34 +126,37 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
     setSuccessMsg(null);
     
     try {
-      const endpoint = mode === "signin" ? "/api/auth/login" : "/api/auth/signup";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Something went wrong");
-      }
-
       if (mode === "signin") {
+        await signInWithEmailAndPassword(auth, email, password);
         setSuccessMsg("Welcome back!");
-        login(data.token, data.user);
         setTimeout(() => {
-          onSuccess({ email: data.user.email });
+          onSuccess({ email: auth.currentUser?.email || "" });
         }, 1000);
       } else {
+        await createUserWithEmailAndPassword(auth, email, password);
         setSuccessMsg("Account created! Please sign in.");
-        // Switch to signin mode after successful signup
         setTimeout(() => {
           setMode("signin");
           setPassword("");
           setSuccessMsg(null);
         }, 2000);
       }
+    } catch (err: any) {
+      setApiError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOAuthLogin = async (provider: any) => {
+    setIsLoading(true);
+    setApiError(null);
+    try {
+      await signInWithPopup(auth, provider);
+      setSuccessMsg("Welcome!");
+      setTimeout(() => {
+        onSuccess({ email: auth.currentUser?.email || "" });
+      }, 1000);
     } catch (err: any) {
       setApiError(err.message);
     } finally {
@@ -172,7 +181,7 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
               {mode === "signin" ? "Welcome Back" : "Join the Elite"}
             </h2>
             <p className="text-[10px] text-zinc-500 uppercase tracking-[0.3em] font-bold">
-              {mode === "signin" ? "Sign in to your professional account" : "Create your athlete profile today"}
+              {mode === "signin" ? "Sign in to your professional account" : "Create your member profile today"}
             </p>
           </div>
 
@@ -250,7 +259,9 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
             <div className="grid grid-cols-2 gap-4">
               <button 
                 type="button"
-                className="flex items-center justify-center gap-3 py-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all text-zinc-400 hover:text-white group"
+                onClick={() => handleOAuthLogin(googleProvider)}
+                disabled={isLoading}
+                className="flex items-center justify-center gap-3 py-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all text-zinc-400 hover:text-white group disabled:opacity-50"
               >
                 <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:scale-110 transition-transform">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -262,7 +273,9 @@ export default function AuthForm({ onSuccess, onBack }: AuthFormProps) {
               </button>
               <button 
                 type="button"
-                className="flex items-center justify-center gap-3 py-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all text-zinc-400 hover:text-white group"
+                onClick={() => handleOAuthLogin(githubProvider)}
+                disabled={isLoading}
+                className="flex items-center justify-center gap-3 py-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all text-zinc-400 hover:text-white group disabled:opacity-50"
               >
                 <Github size={18} className="group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-bold uppercase tracking-widest">Github</span>

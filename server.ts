@@ -11,7 +11,10 @@ dotenv.config();
 
 const app = express();
 const PORT = 3000;
-const JWT_SECRET = process.env.JWT_SECRET || "your_fallback_secret";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET === "your_fallback_secret") {
+  throw new Error("A valid JWT_SECRET environment variable is required.");
+}
 
 let stripeClient: Stripe | null = null;
 
